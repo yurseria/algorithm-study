@@ -2,67 +2,78 @@
   const inquirer = require("inquirer");
   const menuList = await require("./utils/getList");
 
-  const goBackMessage = "Go back.";
-  const quitMessage = "Quit.";
+  class App {
+    constructor() {
+      this.goBackMessage = "Go back.";
+      this.quitMessage = "Quit.";
+    }
 
-  const getMenu = () => {
-    const choices = Object.keys(menuList)
-      .concat(quitMessage)
-      .map((value) => ({
+    async play() {
+      console.log("Let's test algorithm!");
+      this.chooseMenu();
+    }
+
+    getMenu({ menuList, returnMessage, promptName, promptMessage }) {
+      const choices = menuList.concat(returnMessage).map((value) => ({
         name: value,
         value,
       }));
 
-    return {
-      type: "rawlist",
-      name: "type",
-      message: "choose algorithm type.",
-      choices,
-    };
-  };
+      return {
+        type: "rawlist",
+        name: promptName,
+        message: promptMessage,
+        choices,
+      };
+    }
 
-  const getSubMenu = (type) => {
-    const choices = menuList[type].concat(goBackMessage).map((value) => ({
-      name: value,
-      value,
-    }));
+    chooseMenu() {
+      const returnMessage = this.quitMessage;
 
-    return {
-      type: "rawlist",
-      name: "algorithm",
-      message: "choose algorithm.",
-      choices,
-    };
-  };
+      inquirer
+        .prompt(
+          this.getMenu({
+            menuList: Object.keys(menuList),
+            returnMessage,
+            promptName: "type",
+            promptMessage: "choose algorithm type.",
+          })
+        )
+        .then((answers) => {
+          if (answers.type === returnMessage) process.exit(0);
 
-  async function main() {
-    console.log("Let's test algorithm!");
-    chooseMenu();
+          this.chooseSubMenu(answers.type);
+        });
+    }
+
+    chooseSubMenu(type) {
+      const returnMessage = this.goBackMessage;
+
+      inquirer
+        .prompt(
+          this.getMenu({
+            menuList: menuList[type],
+            returnMessage,
+            promptName: "algorithm",
+            promptMessage: "choose algorithm.",
+          })
+        )
+        .then((answers) => {
+          if (answers.algorithm === returnMessage) {
+            this.chooseMenu();
+            return;
+          }
+
+          this.executeAlgorithm(type, answers.algorithm);
+        });
+    }
+
+    executeAlgorithm(type, algorithm) {
+      console.log("executeAlgorithm()");
+      console.log(type, algorithm);
+    }
   }
 
-  function chooseMenu() {
-    inquirer.prompt(getMenu()).then((answers) => {
-      if (answers.type === quitMessage) process.exit(0);
-
-      chooseSubMenu(answers.type);
-    });
-  }
-
-  function chooseSubMenu(type) {
-    inquirer.prompt(getSubMenu(type)).then((answers) => {
-      if (answers.algorithm === goBackMessage) {
-        chooseMenu();
-        return;
-      }
-
-      executeAlgorithm(type, answers.algorithm);
-    });
-  }
-
-  function executeAlgorithm(type, algorithm) {
-    console.log("executeAlgorithm()");
-    console.log(type, algorithm);
-  }
-
-  main();
+  const app = new App();
+  app.play();
 })();
