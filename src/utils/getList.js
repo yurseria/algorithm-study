@@ -20,8 +20,6 @@ module.exports = (async () => {
     const filePath = file.split(`${exampleDir}/`)[1].split("/");
     const fileName = filePath[1];
 
-    filePath[0] = filePath[0].split(". ")[1];
-
     Array.isArray(List[filePath[0]])
       ? List[filePath[0]].push(fileName)
       : (List[filePath[0]] = [fileName]);

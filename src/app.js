@@ -1,10 +1,12 @@
 (async () => {
+  const path = require("path");
   const inquirer = require("inquirer");
   const menuList = await require("./utils/getList");
+  const exampleDir = path.join(__dirname, "examples");
 
   class App {
     constructor() {
-      this.goBackMessage = "Go back.";
+      this.goBackMessage = "Go Back.";
       this.quitMessage = "Quit.";
     }
 
@@ -68,9 +70,13 @@
         });
     }
 
-    executeAlgorithm(type, algorithm) {
-      console.log("executeAlgorithm()");
-      console.log(type, algorithm);
+    async executeAlgorithm(type, algorithmName) {
+      const Algorithm = require(path.join(exampleDir, type, algorithmName));
+
+      const algorithm = new Algorithm();
+      await algorithm.execute();
+
+      this.chooseMenu();
     }
   }
 
