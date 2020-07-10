@@ -1,46 +1,98 @@
+const inquirer = require("inquirer");
+
 class Node {
   constructor() {
     this.data = null;
     this.next = null;
   }
+}
 
-  addBack() {
-    const node = new Node();
+function addFront(root, data) {
+  const node = new Node();
 
-    if (head == null) {
-      head = node;
-    } else {
-    }
+  node.data = data;
+  node.next = root.next;
+  root.next = node;
+}
+
+function removeFront(root) {
+  const front = root.next;
+
+  root.next = front.next;
+}
+
+function showAll(root) {
+  let cur = root.next;
+
+  process.stdout.write("head");
+
+  while (cur !== null) {
+    process.stdout.write(" -> ");
+    process.stdout.write(`${cur.data}`);
+    cur = cur.next;
   }
 
-  addFirst() {}
-
-  show() {}
+  process.stdout.write("\n");
 }
 
 class LinkedListFunction {
-  addBack() {}
+  constructor() {
+    this.goBackMessage = "Go Back.";
+    this.head = new Node();
+    this.head.next = null;
+  }
 
-  addFirst() {}
+  async addFront() {
+    inquirer
+      .prompt({
+        type: "input",
+        name: "data",
+        message: "Enter data to add at the front the node.",
+      })
+      .then(async (answer) => {
+        addFront(this.head, answer.data);
 
-  show() {}
+        await this.execute();
+      });
+  }
 
-  execute() {}
+  async removeFront() {
+    if (this.head.next === null) {
+      console.log("No element!");
+      return;
+    }
+
+    removeFront(this.head);
+
+    await this.execute();
+  }
+
+  async showAll() {
+    showAll(this.head);
+
+    await this.execute();
+  }
+
+  async execute() {
+    return new Promise((resolve) => {
+      inquirer
+        .prompt({
+          type: "rawlist",
+          name: "function",
+          message: "[NodeLinkedList] Choose function.",
+          choices: ["addFront", "removeFront", "showAll", this.goBackMessage],
+        })
+        .then(async (answers) => {
+          if (answers.function === this.goBackMessage) {
+            this.head.next = null;
+            resolve();
+            return;
+          }
+
+          this[answers.function]();
+        });
+    });
+  }
 }
 
-const head = new Node();
-const node1 = new Node();
-const node2 = new Node();
-
-node1.data = 1;
-node2.data = 2;
-
-head.next = node1;
-node1.next = node2;
-node2.next = null;
-
-let cur = head.next;
-while (cur !== null) {
-  console.log(cur.data);
-  cur = cur.next;
-}
+module.exports = LinkedListFunction;
