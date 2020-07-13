@@ -1,4 +1,7 @@
+const path = require("path");
 const inquirer = require("inquirer");
+const message = require("../../config/message");
+
 let arr = [];
 
 class ArrayLinkedList {
@@ -34,7 +37,6 @@ class ArrayLinkedList {
 }
 class ArrayLinkedListFunction {
   constructor() {
-    this.goBackMessage = "Go Back.";
     this.linkedList = new ArrayLinkedList();
   }
 
@@ -104,17 +106,17 @@ class ArrayLinkedListFunction {
         .prompt({
           type: "rawlist",
           name: "function",
-          message: "[ArrayLinkedList] Choose function.",
+          message: `[ArrayLinkedList] ${message.chooseFunction}`,
           choices: [
             "show",
             "addBack",
             "addFirst",
             "removeAt",
-            this.goBackMessage,
+            message.goBackMessage,
           ],
         })
         .then(async (answers) => {
-          if (answers.function === this.goBackMessage) {
+          if (answers.function === message.goBackMessage) {
             arr = [];
             resolve();
             return;

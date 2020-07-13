@@ -1,4 +1,6 @@
+const path = require("path");
 const inquirer = require("inquirer");
+const message = require("../../config/message");
 
 class Node {
   constructor() {
@@ -37,7 +39,6 @@ function showAll(root) {
 
 class LinkedListFunction {
   constructor() {
-    this.goBackMessage = "Go Back.";
     this.head = new Node();
     this.head.next = null;
   }
@@ -79,11 +80,16 @@ class LinkedListFunction {
         .prompt({
           type: "rawlist",
           name: "function",
-          message: "[NodeLinkedList] Choose function.",
-          choices: ["addFront", "removeFront", "showAll", this.goBackMessage],
+          message: `[NodeLinkedList] ${message.chooseFunction}`,
+          choices: [
+            "addFront",
+            "removeFront",
+            "showAll",
+            message.goBackMessage,
+          ],
         })
         .then(async (answers) => {
-          if (answers.function === this.goBackMessage) {
+          if (answers.function === message.goBackMessage) {
             this.head.next = null;
             resolve();
             return;

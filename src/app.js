@@ -2,14 +2,10 @@
   const path = require("path");
   const inquirer = require("inquirer");
   const menuList = await require("./utils/getList");
+  const message = require("./config/message");
   const exampleDir = path.join(__dirname, "examples");
 
   class App {
-    constructor() {
-      this.goBackMessage = "Go Back.";
-      this.quitMessage = "Quit.";
-    }
-
     async play() {
       console.log("Let's test algorithm!");
       this.chooseMenu();
@@ -30,7 +26,7 @@
     }
 
     chooseMenu() {
-      const returnMessage = this.quitMessage;
+      const returnMessage = message.quitMessage;
 
       inquirer
         .prompt(
@@ -49,7 +45,7 @@
     }
 
     chooseSubMenu(type) {
-      const returnMessage = this.goBackMessage;
+      const returnMessage = message.goBackMessage;
 
       inquirer
         .prompt(
