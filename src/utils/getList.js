@@ -18,7 +18,7 @@ async function* getFiles(dir) {
 module.exports = (async () => {
   for await (const file of getFiles(exampleDir)) {
     const filePath = file.split(`${exampleDir}/`)[1].split("/");
-    const fileName = filePath[1];
+    const fileName = filePath[1].split(".js")[0];
 
     Array.isArray(List[filePath[0]])
       ? List[filePath[0]].push(fileName)
