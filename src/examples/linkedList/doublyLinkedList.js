@@ -69,34 +69,30 @@ class LinkedListFunction {
   }
 
   async insert() {
-    inquirer
-      .prompt({
-        type: "input",
-        name: "number",
-        message: "Enter number to add at the node.",
-      })
-      .then(async (answer) => {
-        insert(this.head, this.tail, answer.number);
-
-        await this.execute();
-      });
+    return new Promise((resolve) => {
+      inquirer
+        .prompt({
+          type: "input",
+          name: "number",
+          message: "Enter number to add at the node.",
+        })
+        .then((answer) => {
+          insert(this.head, this.tail, answer.number);
+          resolve();
+        });
+    });
   }
 
-  async removeFront() {
+  removeFront() {
     if (this.head.next === this.tail) {
-      console.log("No element!");
-      return;
+      return new Error("No element!");
     }
 
     removeFront(this.head);
-
-    await this.execute();
   }
 
-  async show() {
+  show() {
     show(this.head, this.tail);
-
-    await this.execute();
   }
 
   async execute() {
@@ -115,7 +111,9 @@ class LinkedListFunction {
             return;
           }
 
-          this[answers.function]();
+          await this[answers.function]();
+          await this.execute();
+          resolve();
         });
     });
   }

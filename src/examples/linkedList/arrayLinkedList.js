@@ -40,64 +40,64 @@ class ArrayLinkedListFunction {
     this.linkedList = new ArrayLinkedList();
   }
 
-  async show() {
+  show() {
     this.linkedList.show();
-
-    await this.execute();
   }
 
-  addBack() {
-    inquirer
-      .prompt({
-        type: "input",
-        name: "data",
-        message: "Enter data to add after the array.",
-      })
-      .then(async (answer) => {
-        this.linkedList.addBack(answer.data);
-
-        await this.execute();
-      });
+  async addBack() {
+    return new Promise((resolve) => {
+      inquirer
+        .prompt({
+          type: "input",
+          name: "data",
+          message: "Enter data to add after the array.",
+        })
+        .then(async (answer) => {
+          this.linkedList.addBack(answer.data);
+          resolve();
+        });
+    });
   }
 
-  addFirst() {
-    inquirer
-      .prompt({
-        type: "input",
-        name: "data",
-        message: "Enter data to add before the array.",
-      })
-      .then(async (answer) => {
-        this.linkedList.addFirst(answer.data);
-
-        await this.execute();
-      });
+  async addFirst() {
+    return new Promise((resolve) => {
+      inquirer
+        .prompt({
+          type: "input",
+          name: "data",
+          message: "Enter data to add before the array.",
+        })
+        .then(async (answer) => {
+          this.linkedList.addFirst(answer.data);
+          resolve();
+        });
+    });
   }
 
   async removeAt() {
     if (this.linkedList.count <= 0) {
       console.error("No element!");
-      await this.execute();
       return;
     }
 
-    inquirer
-      .prompt({
-        type: "input",
-        name: "index",
-        message: "Enter the index to delete from the array.",
-      })
-      .then(async (answer) => {
-        if (arr[answer.index] === null || arr[answer.index] === undefined) {
-          console.error("Wrong index!");
-          await this.execute();
-          return;
-        }
+    return new Promise((resolve) => {
+      inquirer
+        .prompt({
+          type: "input",
+          name: "index",
+          message: "Enter the index to delete from the array.",
+        })
+        .then(async (answer) => {
+          if (arr[answer.index] === null || arr[answer.index] === undefined) {
+            console.error("Wrong index!");
+            resolve();
+            return;
+          }
 
-        this.linkedList.removeAt(answer.index);
-
-        await this.execute();
-      });
+          this.linkedList.removeAt(answer.index);
+          resolve();
+        });
+    });
   }
 
   async execute() {
@@ -122,7 +122,9 @@ class ArrayLinkedListFunction {
             return;
           }
 
-          this[answers.function]();
+          await this[answers.function]();
+          await this.execute();
+          resolve();
         });
     });
   }

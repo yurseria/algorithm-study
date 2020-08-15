@@ -44,34 +44,31 @@ class LinkedListFunction {
   }
 
   async addFront() {
-    inquirer
-      .prompt({
-        type: "input",
-        name: "data",
-        message: "Enter data to add at the front the node.",
-      })
-      .then(async (answer) => {
-        addFront(this.head, answer.data);
-
-        await this.execute();
-      });
+    return new Promise((resolve) => {
+      inquirer
+        .prompt({
+          type: "input",
+          name: "data",
+          message: "Enter data to add at the front the node.",
+        })
+        .then(async (answer) => {
+          addFront(this.head, answer.data);
+          resolve();
+        });
+    });
   }
 
-  async removeFront() {
+  removeFront() {
     if (this.head.next === null) {
       console.log("No element!");
       return;
     }
 
     removeFront(this.head);
-
-    await this.execute();
   }
 
-  async showAll() {
+  showAll() {
     showAll(this.head);
-
-    await this.execute();
   }
 
   async execute() {
@@ -95,7 +92,9 @@ class LinkedListFunction {
             return;
           }
 
-          this[answers.function]();
+          await this[answers.function]();
+          await this.execute();
+          resolve();
         });
     });
   }
