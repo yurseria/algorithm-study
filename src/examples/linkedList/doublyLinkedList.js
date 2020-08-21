@@ -1,4 +1,3 @@
-const path = require("path");
 const inquirer = require("inquirer");
 const message = require("../../config/message");
 
@@ -12,48 +11,50 @@ class Node {
   }
 }
 
-function insert(head, tail, data) {
-  const node = new Node();
-  let cur = new Node();
-  let prev = new Node();
+class DoublyLinkedList {
+  insert(head, tail, data) {
+    const node = new Node();
+    let cur = new Node();
+    let prev = new Node();
 
-  node.data = data;
-  cur = head.next;
+    node.data = data;
+    cur = head.next;
 
-  while (Number(cur.data) < Number(data) && cur !== tail) {
-    cur = cur.next;
+    while (Number(cur.data) < Number(data) && cur !== tail) {
+      cur = cur.next;
+    }
+
+    prev = cur.prev;
+    prev.next = node;
+    node.prev = prev;
+    cur.prev = node;
+    node.next = cur;
   }
 
-  prev = cur.prev;
-  prev.next = node;
-  node.prev = prev;
-  cur.prev = node;
-  node.next = cur;
-}
+  removeFront(head) {
+    let node = head.next;
+    let next = node.next;
 
-function removeFront(head) {
-  let node = head.next;
-  let next = node.next;
+    head.next = node.next;
+    next.prev = head;
 
-  head.next = node.next;
-  next.prev = head;
-
-  node = null;
-}
-
-function show(head, tail) {
-  let cur = new Node();
-  cur = head.next;
-
-  process.stdout.write("head");
-
-  while (cur !== tail) {
-    process.stdout.write(" <-> ");
-    process.stdout.write(`${cur.data}`);
-    cur = cur.next;
+    node = null;
   }
 
-  process.stdout.write(" <-> tail\n");
+  show(head, tail) {
+    let cur = new Node();
+    cur = head.next;
+
+    process.stdout.write("head");
+
+    while (cur !== tail) {
+      process.stdout.write(" <-> ");
+      process.stdout.write(`${cur.data}`);
+      cur = cur.next;
+    }
+
+    process.stdout.write(" <-> tail\n");
+  }
 }
 
 class LinkedListFunction {
@@ -66,6 +67,8 @@ class LinkedListFunction {
 
     this.tail.next = this.tail;
     this.tail.prev = this.head;
+
+    this.linkedList = new DoublyLinkedList();
   }
 
   async insert() {
@@ -77,7 +80,7 @@ class LinkedListFunction {
           message: "Enter number to add at the node.",
         })
         .then((answer) => {
-          insert(this.head, this.tail, answer.number);
+          this.linkedList.insert(this.head, this.tail, answer.number);
           resolve();
         });
     });
@@ -88,11 +91,11 @@ class LinkedListFunction {
       return new Error("No element!");
     }
 
-    removeFront(this.head);
+    this.linkedList.removeFront(this.head);
   }
 
   show() {
-    show(this.head, this.tail);
+    this.linkedList.show(this.head, this.tail);
   }
 
   async execute() {

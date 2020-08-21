@@ -1,37 +1,36 @@
-const path = require("path");
 const inquirer = require("inquirer");
 const message = require("../../config/message");
 
-let arr = [];
-
 class ArrayLinkedList {
   constructor() {
+    this.arr = [];
     this.count = 0;
   }
 
   show() {
     for (let i = 0; i < this.count; i++) {
-      console.log(`${i}: ${arr[i]}`);
+      console.log(`${i}: ${this.arr[i]}`);
     }
   }
 
   addBack(data) {
-    arr[this.count] = data;
+    this.arr[this.count] = data;
     this.count++;
   }
 
   addFirst(data) {
     for (let i = this.count; i >= 1; i--) {
-      arr[i] = arr[i - 1];
+      this.arr[i] = this.arr[i - 1];
     }
-    arr[0] = data;
+    this.arr[0] = data;
     this.count++;
   }
 
   removeAt(index) {
     for (let i = Number(index); i < this.count - 1; i++) {
-      arr[i] = arr[i + 1];
+      this.arr[i] = this.arr[i + 1];
     }
+    this.arr[this.arr.length - 1] = null;
     this.count--;
   }
 }
@@ -88,7 +87,11 @@ class ArrayLinkedListFunction {
           message: "Enter the index to delete from the array.",
         })
         .then(async (answer) => {
-          if (arr[answer.index] === null || arr[answer.index] === undefined) {
+          console.log(this.linkedList.arr[answer.index]);
+          if (
+            this.linkedList.arr[answer.index] === null ||
+            this.linkedList.arr[answer.index] === undefined
+          ) {
             console.error("Wrong index!");
             resolve();
             return;
@@ -117,7 +120,6 @@ class ArrayLinkedListFunction {
         })
         .then(async (answers) => {
           if (answers.function === message.goBackMessage) {
-            arr = [];
             resolve();
             return;
           }

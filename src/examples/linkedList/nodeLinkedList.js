@@ -1,4 +1,3 @@
-const path = require("path");
 const inquirer = require("inquirer");
 const message = require("../../config/message");
 
@@ -9,38 +8,41 @@ class Node {
   }
 }
 
-function addFront(root, data) {
-  const node = new Node();
+class NodeLinkedList {
+  addFront(root, data) {
+    const node = new Node();
 
-  node.data = data;
-  node.next = root.next;
-  root.next = node;
-}
-
-function removeFront(root) {
-  const front = root.next;
-
-  root.next = front.next;
-}
-
-function showAll(root) {
-  let cur = root.next;
-
-  process.stdout.write("head");
-
-  while (cur !== null) {
-    process.stdout.write(" -> ");
-    process.stdout.write(`${cur.data}`);
-    cur = cur.next;
+    node.data = data;
+    node.next = root.next;
+    root.next = node;
   }
 
-  process.stdout.write("\n");
+  removeFront(root) {
+    const front = root.next;
+
+    root.next = front.next;
+  }
+
+  showAll(root) {
+    let cur = root.next;
+
+    process.stdout.write("head");
+
+    while (cur !== null) {
+      process.stdout.write(" -> ");
+      process.stdout.write(`${cur.data}`);
+      cur = cur.next;
+    }
+
+    process.stdout.write("\n");
+  }
 }
 
 class LinkedListFunction {
   constructor() {
     this.head = new Node();
     this.head.next = null;
+    this.linkedList = new NodeLinkedList();
   }
 
   async addFront() {
@@ -52,7 +54,7 @@ class LinkedListFunction {
           message: "Enter data to add at the front the node.",
         })
         .then(async (answer) => {
-          addFront(this.head, answer.data);
+          this.linkedList.addFront(this.head, answer.data);
           resolve();
         });
     });
@@ -64,11 +66,11 @@ class LinkedListFunction {
       return;
     }
 
-    removeFront(this.head);
+    this.linkedList.removeFront(this.head);
   }
 
   showAll() {
-    showAll(this.head);
+    this.linkedList.showAll(this.head);
   }
 
   async execute() {
