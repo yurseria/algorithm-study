@@ -44,32 +44,27 @@ class ArrayLinkedListFunction {
   }
 
   async addBack() {
-    return new Promise((resolve) => {
-      inquirer
-        .prompt({
-          type: "input",
-          name: "data",
-          message: "Enter data to add after the array.",
-        })
-        .then(async (answer) => {
-          this.linkedList.addBack(answer.data);
-          resolve();
-        });
+    return new Promise(async (resolve) => {
+      const answer = await inquirer.prompt({
+        type: "input",
+        name: "data",
+        message: "Enter data to add after the list.",
+      });
+      this.linkedList.addBack(answer.data);
+      resolve();
     });
   }
 
   async addFirst() {
-    return new Promise((resolve) => {
-      inquirer
-        .prompt({
-          type: "input",
-          name: "data",
-          message: "Enter data to add before the array.",
-        })
-        .then(async (answer) => {
-          this.linkedList.addFirst(answer.data);
-          resolve();
-        });
+    return new Promise(async (resolve) => {
+      const answer = await inquirer.prompt({
+        type: "input",
+        name: "data",
+        message: "Enter data to add before the list.",
+      });
+
+      this.linkedList.addFirst(answer.data);
+      resolve();
     });
   }
 
@@ -79,55 +74,50 @@ class ArrayLinkedListFunction {
       return;
     }
 
-    return new Promise((resolve) => {
-      inquirer
-        .prompt({
-          type: "input",
-          name: "index",
-          message: "Enter the index to delete from the array.",
-        })
-        .then(async (answer) => {
-          console.log(this.linkedList.arr[answer.index]);
-          if (
-            this.linkedList.arr[answer.index] === null ||
-            this.linkedList.arr[answer.index] === undefined
-          ) {
-            console.error("Wrong index!");
-            resolve();
-            return;
-          }
+    return new Promise(async (resolve) => {
+      const answer = await inquirer.prompt({
+        type: "input",
+        name: "index",
+        message: "Enter the index to delete from the list.",
+      });
 
-          this.linkedList.removeAt(answer.index);
-          resolve();
-        });
+      if (
+        this.linkedList.arr[answer.index] === null ||
+        this.linkedList.arr[answer.index] === undefined
+      ) {
+        console.error("Wrong index!");
+        resolve();
+        return;
+      }
+
+      this.linkedList.removeAt(answer.index);
+      resolve();
     });
   }
 
   async execute() {
-    return new Promise((resolve) => {
-      inquirer
-        .prompt({
-          type: "rawlist",
-          name: "function",
-          message: `[ArrayLinkedList] ${message.chooseFunction}`,
-          choices: [
-            "show",
-            "addBack",
-            "addFirst",
-            "removeAt",
-            message.goBackMessage,
-          ],
-        })
-        .then(async (answers) => {
-          if (answers.function === message.goBackMessage) {
-            resolve();
-            return;
-          }
+    return new Promise(async (resolve) => {
+      const answer = await inquirer.prompt({
+        type: "rawlist",
+        name: "function",
+        message: `[ArrayLinkedList] ${message.chooseFunction}`,
+        choices: [
+          "show",
+          "addBack",
+          "addFirst",
+          "removeAt",
+          message.goBackMessage,
+        ],
+      });
 
-          await this[answers.function]();
-          await this.execute();
-          resolve();
-        });
+      if (answer.function === message.goBackMessage) {
+        resolve();
+        return;
+      }
+
+      await this[answer.function]();
+      await this.execute();
+      resolve();
     });
   }
 }

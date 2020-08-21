@@ -46,17 +46,15 @@ class LinkedListFunction {
   }
 
   async addFront() {
-    return new Promise((resolve) => {
-      inquirer
-        .prompt({
-          type: "input",
-          name: "data",
-          message: "Enter data to add at the front the node.",
-        })
-        .then(async (answer) => {
-          this.linkedList.addFront(this.head, answer.data);
-          resolve();
-        });
+    return new Promise(async (resolve) => {
+      const answer = await inquirer.prompt({
+        type: "input",
+        name: "data",
+        message: "Enter data to add at the front the list.",
+      });
+
+      this.linkedList.addFront(this.head, answer.data);
+      resolve();
     });
   }
 
@@ -74,30 +72,23 @@ class LinkedListFunction {
   }
 
   async execute() {
-    return new Promise((resolve) => {
-      inquirer
-        .prompt({
-          type: "rawlist",
-          name: "function",
-          message: `[NodeLinkedList] ${message.chooseFunction}`,
-          choices: [
-            "addFront",
-            "removeFront",
-            "showAll",
-            message.goBackMessage,
-          ],
-        })
-        .then(async (answers) => {
-          if (answers.function === message.goBackMessage) {
-            this.head.next = null;
-            resolve();
-            return;
-          }
+    return new Promise(async (resolve) => {
+      const answer = await inquirer.prompt({
+        type: "rawlist",
+        name: "function",
+        message: `[NodeLinkedList] ${message.chooseFunction}`,
+        choices: ["addFront", "removeFront", "showAll", message.goBackMessage],
+      });
 
-          await this[answers.function]();
-          await this.execute();
-          resolve();
-        });
+      if (answer.function === message.goBackMessage) {
+        this.head.next = null;
+        resolve();
+        return;
+      }
+
+      await this[answer.function]();
+      await this.execute();
+      resolve();
     });
   }
 }

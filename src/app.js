@@ -8,7 +8,7 @@
   class App {
     async play() {
       console.log("Let's test algorithm!");
-      this.chooseMenu();
+      await this.chooseMenu();
     }
 
     getMenu({ menuList, returnMessage, promptName, promptMessage }) {
@@ -25,45 +25,41 @@
       };
     }
 
-    chooseMenu() {
+    async chooseMenu() {
       const returnMessage = message.quitMessage;
 
-      inquirer
-        .prompt(
-          this.getMenu({
-            menuList: Object.keys(menuList),
-            returnMessage,
-            promptName: "type",
-            promptMessage: "choose algorithm type.",
-          })
-        )
-        .then((answers) => {
-          if (answers.type === returnMessage) process.exit(0);
+      const answer = await inquirer.prompt(
+        this.getMenu({
+          menuList: Object.keys(menuList),
+          returnMessage,
+          promptName: "type",
+          promptMessage: "choose algorithm type.",
+        })
+      );
 
-          this.chooseSubMenu(answers.type);
-        });
+      if (answer.type === returnMessage) process.exit(0);
+
+      await this.chooseSubMenu(answer.type);
     }
 
-    chooseSubMenu(type) {
+    async chooseSubMenu(type) {
       const returnMessage = message.goBackMessage;
 
-      inquirer
-        .prompt(
-          this.getMenu({
-            menuList: menuList[type],
-            returnMessage,
-            promptName: "algorithm",
-            promptMessage: "choose algorithm.",
-          })
-        )
-        .then((answers) => {
-          if (answers.algorithm === returnMessage) {
-            this.chooseMenu();
-            return;
-          }
+      const answer = await inquirer.prompt(
+        this.getMenu({
+          menuList: menuList[type],
+          returnMessage,
+          promptName: "algorithm",
+          promptMessage: "choose algorithm.",
+        })
+      );
 
-          this.executeAlgorithm(type, answers.algorithm);
-        });
+      if (answer.algorithm === returnMessage) {
+        await this.chooseMenu();
+        return;
+      }
+
+      this.executeAlgorithm(type, answer.algorithm);
     }
 
     async executeAlgorithm(type, algorithmName) {
@@ -72,7 +68,7 @@
       const algorithm = new Algorithm();
       await algorithm.execute();
 
-      this.chooseMenu();
+      await this.chooseMenu();
     }
   }
 
