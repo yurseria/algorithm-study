@@ -3,41 +3,44 @@ const message = require("../../config/message");
 
 class Node {
   constructor() {
-    this.arr = [];
-    this.size = 0;
-    this.top = -1;
+    this.data = null;
+    this.next = null;
   }
 }
 
-class ArrayStack {
+class NodeStack {
   constructor() {
-    this.stack = new Node();
+    this.top = null;
   }
 
-  set size(size) {
-    this.stack.size = size;
+  push(stack, data) {
+    this.node = new Node();
+    this.node.data = data;
+    this.node.next = stack.top;
+    stack.top = this.node;
   }
 
-  push(data) {
-    if (this.stack.top >= this.stack.size - 1) {
-      console.error("Stack overflow!");
-      return Infinity;
-    }
-    this.stack[++this.stack.top] = data;
-  }
-
-  pop() {
-    if (this.stack.top === -1) {
+  pop(stack) {
+    if (!stack.top) {
       console.error("Stack underflow!");
       return -Infinity;
     }
-    return this.stack[this.stack.top--];
+    let node = new Node();
+
+    node = stack.top;
+    const data = node.data;
+    stack.top = node.next;
+    node = null;
+
+    return data;
   }
 
-  show() {
+  show(stack) {
+    let cur = stack.top;
     console.log("--- Top of stack ---");
-    for (let i = this.stack.top; i >= 0; i--) {
-      console.log(this.stack[i]);
+    while (cur !== null) {
+      console.log(cur.data);
+      cur = cur.next;
     }
     console.log("--- Bottom of stack ---");
   }
@@ -45,7 +48,7 @@ class ArrayStack {
 
 class StackFunction {
   constructor() {
-    this.stack = new ArrayStack();
+    this.stack = new NodeStack();
   }
 
   async push() {
@@ -57,37 +60,26 @@ class StackFunction {
           message: "Enter data to push at the stack.",
         })
         .then((answer) => {
-          this.stack.push(answer.data);
+          this.stack.push(this.stack, answer.data);
           resolve();
         });
     });
   }
 
   pop() {
-    console.log(`Popped: ${this.stack.pop()}`);
+    console.log(`Popped: ${this.stack.pop(this.stack)}`);
   }
 
   show() {
-    this.stack.show();
+    this.stack.show(this.stack);
   }
 
-  async execute(isRecursive) {
+  async execute() {
     return new Promise(async (resolve) => {
-      if (!isRecursive) {
-        const stackSize = await inquirer.prompt({
-          type: "input",
-          name: "number",
-          message: "Set size of stack. (default: 10)",
-          default: 10,
-        });
-
-        this.stack.size = stackSize.number;
-      }
-
       const functionName = await inquirer.prompt({
         type: "rawlist",
         name: "function",
-        message: `[ArrayStack] ${message.chooseFunction}`,
+        message: `[NodeStack] ${message.chooseFunction}`,
         choices: ["push", "pop", "show", message.goBackMessage],
       });
 
@@ -97,7 +89,7 @@ class StackFunction {
       }
 
       await this[functionName.function]();
-      await this.execute(true);
+      await this.execute();
       resolve();
     });
   }
