@@ -1,7 +1,11 @@
-const inquirer = require("inquirer");
-const message = require("../../config/message");
+import inquirer from "inquirer";
+import message from "../../config/message.json";
+import DataStructure from "../../interfaces/IdataStructure";
 
 class ArrayLinkedList {
+  arr: Array<string | null>;
+  count: number;
+
   constructor() {
     this.arr = [];
     this.count = 0;
@@ -13,12 +17,12 @@ class ArrayLinkedList {
     }
   }
 
-  addBack(data) {
+  addBack(data: string) {
     this.arr[this.count] = data;
     this.count++;
   }
 
-  addFirst(data) {
+  addFirst(data: string) {
     for (let i = this.count; i >= 1; i--) {
       this.arr[i] = this.arr[i - 1];
     }
@@ -26,36 +30,38 @@ class ArrayLinkedList {
     this.count++;
   }
 
-  removeAt(index) {
-    for (let i = Number(index); i < this.count - 1; i++) {
+  removeAt(index: number) {
+    for (let i = index; i < this.count - 1; i++) {
       this.arr[i] = this.arr[i + 1];
     }
     this.arr[this.arr.length - 1] = null;
     this.count--;
   }
 }
-class ArrayLinkedListFunction {
+
+class ArrayLinkedListFunction extends DataStructure {
   constructor() {
-    this.linkedList = new ArrayLinkedList();
+    super();
+    this.dataStructure = new ArrayLinkedList();
   }
 
   show() {
-    this.linkedList.show();
+    this.dataStructure.show();
   }
 
-  async addBack() {
+  addBack() {
     return new Promise(async (resolve) => {
       const answer = await inquirer.prompt({
         type: "input",
         name: "data",
         message: "Enter data to add after the list.",
       });
-      this.linkedList.addBack(answer.data);
+      this.dataStructure.addBack(answer.data);
       resolve();
     });
   }
 
-  async addFirst() {
+  addFirst() {
     return new Promise(async (resolve) => {
       const answer = await inquirer.prompt({
         type: "input",
@@ -63,13 +69,13 @@ class ArrayLinkedListFunction {
         message: "Enter data to add before the list.",
       });
 
-      this.linkedList.addFirst(answer.data);
+      this.dataStructure.addFirst(answer.data);
       resolve();
     });
   }
 
-  async removeAt() {
-    if (this.linkedList.count <= 0) {
+  removeAt() {
+    if (this.dataStructure.count <= 0) {
       console.error("No element!");
       return;
     }
@@ -82,41 +88,15 @@ class ArrayLinkedListFunction {
       });
 
       if (
-        this.linkedList.arr[answer.index] === null ||
-        this.linkedList.arr[answer.index] === undefined
+        this.dataStructure.arr[answer.index] === null ||
+        this.dataStructure.arr[answer.index] === undefined
       ) {
         console.error("Wrong index!");
         resolve();
         return;
       }
 
-      this.linkedList.removeAt(answer.index);
-      resolve();
-    });
-  }
-
-  async execute() {
-    return new Promise(async (resolve) => {
-      const answer = await inquirer.prompt({
-        type: "rawlist",
-        name: "function",
-        message: `[ArrayLinkedList] ${message.chooseFunction}`,
-        choices: [
-          "show",
-          "addBack",
-          "addFirst",
-          "removeAt",
-          message.goBackMessage,
-        ],
-      });
-
-      if (answer.function === message.goBackMessage) {
-        resolve();
-        return;
-      }
-
-      await this[answer.function]();
-      await this.execute();
+      this.dataStructure.removeAt(Number(answer.index));
       resolve();
     });
   }

@@ -105,3 +105,8 @@ dist
 
 # vscode
 .vscode/
+
+# Additional files
+.dist/
+test*.js
+test*.ts
