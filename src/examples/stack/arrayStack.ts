@@ -87,4 +87,4 @@ class ArrayStackLauncher extends AlgorithmLauncher {
   }
 }
 
-module.exports = ArrayStackLauncher;
+export default ArrayStackLauncher;

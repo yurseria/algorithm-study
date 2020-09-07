@@ -96,4 +96,4 @@ class ArrayLinkedListLauncher extends AlgorithmLauncher {
   }
 }
 
-module.exports = ArrayLinkedListLauncher;
+export default ArrayLinkedListLauncher;

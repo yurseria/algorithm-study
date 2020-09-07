@@ -103,4 +103,4 @@ class DoublyLinkedListLauncher extends AlgorithmLauncher {
   }
 }
 
-module.exports = DoublyLinkedListLauncher;
+export default DoublyLinkedListLauncher;

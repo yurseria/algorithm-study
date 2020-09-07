@@ -80,4 +80,4 @@ class NodeLinkedListLauncher extends AlgorithmLauncher {
   }
 }
 
-module.exports = NodeLinkedListLauncher;
+export default NodeLinkedListLauncher;

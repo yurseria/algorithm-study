@@ -40,6 +40,10 @@ class NodeStack {
     return data;
   }
 
+  getTop() {
+    return this.top?.data;
+  }
+
   show() {
     let cur = this.top;
     console.log("--- Top of stack ---");
@@ -72,9 +76,13 @@ class NodeStackLauncher extends AlgorithmLauncher {
     console.log(`Popped: ${this.dataStructure.pop()}`);
   }
 
+  getTop() {
+    console.log(`Top : ${this.dataStructure.getTop()}`);
+  }
+
   show() {
     this.dataStructure.show();
   }
 }
 
-module.exports = NodeStackLauncher;
+export default NodeStackLauncher;
