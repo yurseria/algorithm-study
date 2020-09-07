@@ -1,6 +1,6 @@
 import inquirer from "inquirer";
 import message from "../../config/message.json";
-import DataStructure from "../../interfaces/IdataStructure";
+import AlgorithmLauncher from "../../utils/algorithmLauncher";
 
 class Node {
   data: string;
@@ -49,23 +49,21 @@ class NodeLinkedList {
   }
 }
 
-class LinkedListFunction extends DataStructure {
+class NodeLinkedListLauncher extends AlgorithmLauncher {
   constructor() {
     super();
     this.dataStructure = new NodeLinkedList();
   }
 
   async addFront() {
-    return new Promise(async (resolve) => {
-      const answer = await inquirer.prompt({
-        type: "input",
-        name: "data",
-        message: "Enter data to add at the front the list.",
-      });
-
-      this.dataStructure.addFront(answer.data);
-      resolve();
-    });
+    await super.prompt(
+      "input",
+      "data",
+      "Enter data to add at the front the list.",
+      (answer: { data: string }) => {
+        this.dataStructure.addFront(answer.data);
+      }
+    );
   }
 
   removeFront() {
@@ -82,4 +80,4 @@ class LinkedListFunction extends DataStructure {
   }
 }
 
-module.exports = LinkedListFunction;
+module.exports = NodeLinkedListLauncher;

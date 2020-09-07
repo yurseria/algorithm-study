@@ -1,16 +1,27 @@
 import inquirer from "inquirer";
 import message from "../config/message.json";
+import { IAlgorithmLauncher } from "../interfaces/algorithmLauncherInterface";
 
-interface IdataStructure {
-  execute: Function;
-}
-
-class DataStructure implements IdataStructure {
+class AlgorithmLauncher implements IAlgorithmLauncher {
   dataStructure: any;
   [key: string]: Function;
 
   constructor() {
     this.dataStructure = null;
+  }
+
+  async prompt(
+    type: string,
+    name: string,
+    message: string,
+    callback: Function
+  ) {
+    return new Promise(async (resolve) => {
+      const answer = await inquirer.prompt([{ type, name, message }]);
+
+      callback(answer);
+      resolve();
+    });
   }
 
   async execute(isRecursive: boolean) {
@@ -42,4 +53,4 @@ class DataStructure implements IdataStructure {
   }
 }
 
-export default DataStructure;
+export default AlgorithmLauncher;

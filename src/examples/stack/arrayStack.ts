@@ -1,6 +1,6 @@
 import inquirer from "inquirer";
 import message from "../../config/message.json";
-import DataStructure from "../../interfaces/IdataStructure";
+import AlgorithmLauncher from "../../utils/algorithmLauncher";
 
 class Node {
   arr: Array<string>;
@@ -46,23 +46,21 @@ class ArrayStack {
   }
 }
 
-class StackFunction extends DataStructure {
+class ArrayStackLauncher extends AlgorithmLauncher {
   constructor() {
     super();
     this.dataStructure = new ArrayStack();
   }
 
   async push() {
-    return new Promise(async (resolve) => {
-      const answer = await inquirer.prompt({
-        type: "input",
-        name: "data",
-        message: "Enter data to push at the stack.",
-      });
-
-      this.dataStructure.push(answer.data);
-      resolve();
-    });
+    await super.prompt(
+      "input",
+      "data",
+      "Enter data to push at the stack.",
+      (answer: { data: string }) => {
+        this.dataStructure.push(answer.data);
+      }
+    );
   }
 
   pop() {
@@ -89,4 +87,4 @@ class StackFunction extends DataStructure {
   }
 }
 
-module.exports = StackFunction;
+module.exports = ArrayStackLauncher;

@@ -1,6 +1,6 @@
 import inquirer from "inquirer";
 import message from "../../config/message.json";
-import DataStructure from "../../interfaces/IdataStructure";
+import AlgorithmLauncher from "../../utils/algorithmLauncher";
 
 class ArrayLinkedList {
   arr: Array<string | null>;
@@ -39,7 +39,7 @@ class ArrayLinkedList {
   }
 }
 
-class ArrayLinkedListFunction extends DataStructure {
+class ArrayLinkedListLauncher extends AlgorithmLauncher {
   constructor() {
     super();
     this.dataStructure = new ArrayLinkedList();
@@ -49,57 +49,51 @@ class ArrayLinkedListFunction extends DataStructure {
     this.dataStructure.show();
   }
 
-  addBack() {
-    return new Promise(async (resolve) => {
-      const answer = await inquirer.prompt({
-        type: "input",
-        name: "data",
-        message: "Enter data to add after the list.",
-      });
-      this.dataStructure.addBack(answer.data);
-      resolve();
-    });
+  async addBack() {
+    await super.prompt(
+      "input",
+      "data",
+      "Enter data to add after the list.",
+      (answer: { data: string }) => {
+        this.dataStructure.addBack(answer.data);
+      }
+    );
   }
 
-  addFirst() {
-    return new Promise(async (resolve) => {
-      const answer = await inquirer.prompt({
-        type: "input",
-        name: "data",
-        message: "Enter data to add before the list.",
-      });
-
-      this.dataStructure.addFirst(answer.data);
-      resolve();
-    });
+  async addFirst() {
+    await super.prompt(
+      "input",
+      "data",
+      "Enter data to add before the list.",
+      (answer: { data: string }) => {
+        this.dataStructure.addFirst(answer.data);
+      }
+    );
   }
 
-  removeAt() {
+  async removeAt() {
     if (this.dataStructure.count <= 0) {
       console.error("No element!");
       return;
     }
 
-    return new Promise(async (resolve) => {
-      const answer = await inquirer.prompt({
-        type: "input",
-        name: "index",
-        message: "Enter the index to delete from the list.",
-      });
+    await super.prompt(
+      "input",
+      "index",
+      "Enter the index to delete from the list.",
+      (answer: { index: number }) => {
+        if (
+          this.dataStructure.arr[answer.index] === null ||
+          this.dataStructure.arr[answer.index] === undefined
+        ) {
+          console.error("Wrong index!");
+          return;
+        }
 
-      if (
-        this.dataStructure.arr[answer.index] === null ||
-        this.dataStructure.arr[answer.index] === undefined
-      ) {
-        console.error("Wrong index!");
-        resolve();
-        return;
+        this.dataStructure.removeAt(Number(answer.index));
       }
-
-      this.dataStructure.removeAt(Number(answer.index));
-      resolve();
-    });
+    );
   }
 }
 
-module.exports = ArrayLinkedListFunction;
+module.exports = ArrayLinkedListLauncher;

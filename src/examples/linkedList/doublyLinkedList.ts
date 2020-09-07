@@ -1,6 +1,6 @@
 import inquirer from "inquirer";
 import message from "../../config/message.json";
-import DataStructure from "../../interfaces/IdataStructure";
+import AlgorithmLauncher from "../../utils/algorithmLauncher";
 
 // Ascending-ordered number Linked list
 
@@ -73,23 +73,21 @@ class DoublyLinkedList {
   }
 }
 
-class LinkedListFunction extends DataStructure {
+class DoublyLinkedListLauncher extends AlgorithmLauncher {
   constructor() {
     super();
     this.dataStructure = new DoublyLinkedList();
   }
 
   async insert() {
-    return new Promise(async (resolve) => {
-      const answer = await inquirer.prompt({
-        type: "input",
-        name: "number",
-        message: "Enter number to add at the list.",
-      });
-
-      this.dataStructure.insert(answer.number);
-      resolve();
-    });
+    await super.prompt(
+      "input",
+      "number",
+      "Enter number to add at the list.",
+      (answer: { number: number }) => {
+        this.dataStructure.insert(answer.number);
+      }
+    );
   }
 
   removeFront() {
@@ -105,4 +103,4 @@ class LinkedListFunction extends DataStructure {
   }
 }
 
-module.exports = LinkedListFunction;
+module.exports = DoublyLinkedListLauncher;
