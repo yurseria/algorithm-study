@@ -1,6 +1,6 @@
 import inquirer from "inquirer";
 import message from "../../config/message.json";
-import AlgorithmLauncher from "../../utils/algorithmLauncher";
+import { AlgorithmLauncher } from "../../utils/algorithmLauncher";
 
 class ArrayLinkedList {
   arr: Array<string | null>;
@@ -96,4 +96,4 @@ class ArrayLinkedListLauncher extends AlgorithmLauncher {
   }
 }
 
-export default ArrayLinkedListLauncher;
+export { ArrayLinkedListLauncher as AlgorithmLauncher };

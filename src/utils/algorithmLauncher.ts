@@ -2,7 +2,9 @@ import inquirer from "inquirer";
 import message from "../config/message.json";
 import { IAlgorithmLauncher } from "../interfaces/algorithmLauncherInterface";
 
-class AlgorithmLauncher implements IAlgorithmLauncher {
+const separator = new inquirer.Separator();
+
+export class AlgorithmLauncher implements IAlgorithmLauncher {
   dataStructure: any;
   [key: string]: Function;
 
@@ -25,10 +27,13 @@ class AlgorithmLauncher implements IAlgorithmLauncher {
   }
 
   async execute(isRecursive: boolean) {
-    const dataStructureMethodName = Object.getOwnPropertyNames(
+    const dataStructureMethodName: Array<
+      string | typeof separator
+    > = Object.getOwnPropertyNames(
       Object.getPrototypeOf(this.dataStructure)
     ).filter((data) => data !== "constructor");
 
+    dataStructureMethodName.push(separator);
     dataStructureMethodName.push(message.goBackMessage);
 
     return new Promise(async (resolve) => {
@@ -52,5 +57,3 @@ class AlgorithmLauncher implements IAlgorithmLauncher {
     });
   }
 }
-
-export default AlgorithmLauncher;

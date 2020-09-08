@@ -1,6 +1,6 @@
 import inquirer from "inquirer";
 import message from "../../config/message.json";
-import AlgorithmLauncher from "../../utils/algorithmLauncher";
+import { AlgorithmLauncher } from "../../utils/algorithmLauncher";
 
 class Node {
   data: string;
@@ -12,7 +12,7 @@ class Node {
   }
 }
 
-class NodeStack {
+export class NodeStack {
   top: Node | null;
 
   constructor() {
@@ -40,10 +40,6 @@ class NodeStack {
     return data;
   }
 
-  getTop() {
-    return this.top?.data;
-  }
-
   show() {
     let cur = this.top;
     console.log("--- Top of stack ---");
@@ -52,6 +48,10 @@ class NodeStack {
       cur = cur.next;
     }
     console.log("--- Bottom of stack ---");
+  }
+
+  getTop() {
+    return (this.top as Node)?.data;
   }
 }
 
@@ -76,13 +76,13 @@ class NodeStackLauncher extends AlgorithmLauncher {
     console.log(`Popped: ${this.dataStructure.pop()}`);
   }
 
-  getTop() {
-    console.log(`Top : ${this.dataStructure.getTop()}`);
-  }
-
   show() {
     this.dataStructure.show();
   }
+
+  getTop() {
+    console.log(`Top : ${this.dataStructure.getTop()}`);
+  }
 }
 
-export default NodeStackLauncher;
+export { NodeStackLauncher as AlgorithmLauncher };

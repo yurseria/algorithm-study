@@ -1,6 +1,6 @@
 import inquirer from "inquirer";
 import message from "../../config/message.json";
-import AlgorithmLauncher from "../../utils/algorithmLauncher";
+import { AlgorithmLauncher } from "../../utils/algorithmLauncher";
 
 class Node {
   data: string;
@@ -80,4 +80,4 @@ class NodeLinkedListLauncher extends AlgorithmLauncher {
   }
 }
 
-export default NodeLinkedListLauncher;
+export { NodeLinkedListLauncher as AlgorithmLauncher };

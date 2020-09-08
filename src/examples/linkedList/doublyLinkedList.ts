@@ -1,6 +1,6 @@
 import inquirer from "inquirer";
 import message from "../../config/message.json";
-import AlgorithmLauncher from "../../utils/algorithmLauncher";
+import { AlgorithmLauncher } from "../../utils/algorithmLauncher";
 
 // Ascending-ordered number Linked list
 
@@ -103,4 +103,4 @@ class DoublyLinkedListLauncher extends AlgorithmLauncher {
   }
 }
 
-export default DoublyLinkedListLauncher;
+export { DoublyLinkedListLauncher as AlgorithmLauncher };

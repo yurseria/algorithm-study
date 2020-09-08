@@ -4,6 +4,7 @@ import menuList from "./utils/getList";
 import message from "./config/message.json";
 
 const exampleDir = path.join(__dirname, "examples");
+const seperator = new inquirer.Separator();
 
 class App {
   async play() {
@@ -12,15 +13,14 @@ class App {
   }
 
   getMenu(
-    menuList: Array<string>,
+    menuList: Array<string | typeof seperator>,
     returnMessage: string,
     promptName: string,
     promptMessage: string
   ) {
-    const choices = menuList.concat(returnMessage).map((value) => ({
-      name: value,
-      value,
-    }));
+    const choices = menuList
+      .concat(new inquirer.Separator())
+      .concat(returnMessage);
 
     return {
       type: "rawlist",
@@ -68,12 +68,14 @@ class App {
   }
 
   async executeAlgorithm(type: string, algorithmName: string) {
-    const Algorithm = require(path.join(exampleDir, type, algorithmName));
+    const { AlgorithmLauncher } = await import(
+      path.join(exampleDir, type, algorithmName)
+    );
 
-    const algorithm = new Algorithm();
-    await algorithm.execute(false);
+    const algorithmLauncher = new AlgorithmLauncher();
+    await algorithmLauncher.execute(false);
 
-    await this.chooseMenu();
+    await this.chooseSubMenu(type);
   }
 }
 
