@@ -35,6 +35,7 @@ export class AlgorithmLauncher implements IAlgorithmLauncher {
 
     dataStructureMethodName.push(separator);
     dataStructureMethodName.push(message.goBackMessage);
+    dataStructureMethodName.push(message.quitMessage);
 
     return new Promise(async (resolve) => {
       const answer = await inquirer.prompt([
@@ -49,6 +50,10 @@ export class AlgorithmLauncher implements IAlgorithmLauncher {
       if (answer.function === message.goBackMessage) {
         resolve();
         return;
+      }
+
+      if (answer.function === message.quitMessage) {
+        process.exit(0);
       }
 
       await this[answer.function]();

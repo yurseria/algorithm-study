@@ -2,7 +2,7 @@ import inquirer from "inquirer";
 import message from "../../config/message.json";
 import { AlgorithmLauncher } from "../../utils/algorithmLauncher";
 
-class Node {
+class ArrayStack {
   arr: Array<string>;
   size: number;
   top: number;
@@ -12,35 +12,27 @@ class Node {
     this.size = 0;
     this.top = -1;
   }
-}
-
-class ArrayStack {
-  stack: Node;
-
-  constructor() {
-    this.stack = new Node();
-  }
 
   push(data: string) {
-    if (this.stack.top >= this.stack.size - 1) {
+    if (this.top >= this.size - 1) {
       console.error("Stack overflow!");
       return Infinity;
     }
-    this.stack.arr[++this.stack.top] = data;
+    this.arr[++this.top] = data;
   }
 
   pop() {
-    if (this.stack.top === -1) {
+    if (this.top === -1) {
       console.error("Stack underflow!");
       return -Infinity;
     }
-    return this.stack.arr[this.stack.top--];
+    return this.arr[this.top--];
   }
 
   show() {
     console.log("--- Top of stack ---");
-    for (let i = this.stack.top; i >= 0; i--) {
-      console.log(this.stack.arr[i]);
+    for (let i = this.top; i >= 0; i--) {
+      console.log(this.arr[i]);
     }
     console.log("--- Bottom of stack ---");
   }
@@ -80,7 +72,7 @@ class ArrayStackLauncher extends AlgorithmLauncher {
         default: 10,
       });
 
-      this.dataStructure.stack.size = stackSize.number;
+      this.dataStructure.size = stackSize.number;
     }
 
     await super.execute(true);
