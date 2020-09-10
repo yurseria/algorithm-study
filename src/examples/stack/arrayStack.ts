@@ -69,6 +69,12 @@ class ArrayStackLauncher extends AlgorithmLauncher {
         name: "number",
         message: "Set size of stack. (default: 10)",
         default: 10,
+        validate: (value: string) => {
+          var pass = value.match(/^(\d+)$/);
+          if (pass) return true;
+
+          return "Please enter a valid value.";
+        },
       });
 
       this.dataStructure.size = stackSize.number;
