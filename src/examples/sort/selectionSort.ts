@@ -47,7 +47,7 @@ class SelectionSortLauncher {
             var pass = value.match(/^(\d+)$/);
             if (pass) return true;
 
-            return "Please enter a valid formula.";
+            return "Please enter a valid value.";
           },
         },
         {
@@ -59,7 +59,7 @@ class SelectionSortLauncher {
             var pass = value.match(/^((\d+) )+(\d+|\))$/);
             if (pass) return true;
 
-            return "Please enter a valid formula.";
+            return "Please enter a valid value.";
           },
         },
       ])) as {
