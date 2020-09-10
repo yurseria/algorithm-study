@@ -1,7 +1,5 @@
 import inquirer from "inquirer";
-import message from "../../config/message.json";
 import { AlgorithmLauncher } from "../../utils/algorithmLauncher";
-import { threadId } from "worker_threads";
 
 class ArrayQueue {
   queue: string[];

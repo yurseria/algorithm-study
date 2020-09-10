@@ -113,7 +113,6 @@ class StackCalculator {
 
   async execute() {
     return new Promise(async (resolve) => {
-      // const input = "( ( 3 + 4 ) * 5 ) - 5 * 7 * 5 - 5 * 10";
       const answer = await inquirer.prompt([
         {
           type: "rawlist",
