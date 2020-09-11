@@ -1,6 +1,6 @@
-import { SelectionSort, AlgorithmLauncher } from "./selectionSort";
+import { Sort, SortLauncher } from "../../utils/sortLauncher";
 
-class InsertionSort extends SelectionSort {
+class InsertionSort extends Sort {
   constructor() {
     super();
   }
@@ -16,10 +16,16 @@ class InsertionSort extends SelectionSort {
   }
 }
 
-class InsertionSortLauncher extends AlgorithmLauncher {
+class InsertionSortLauncher extends SortLauncher {
   constructor() {
     super();
     this.dataStructure = new InsertionSort();
+  }
+
+  async execute() {
+    await super.launch((answer: { length: string; data: string }) => {
+      this.dataStructure.sort(Number(answer.length));
+    });
   }
 }
 
