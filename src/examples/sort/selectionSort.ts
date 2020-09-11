@@ -1,6 +1,6 @@
 import inquirer from "inquirer";
 
-class SelectionSort {
+export class SelectionSort {
   arr: Array<number>;
 
   constructor() {
