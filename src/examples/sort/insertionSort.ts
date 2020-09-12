@@ -5,8 +5,8 @@ class InsertionSort extends Sort {
     super();
   }
 
-  sort(n: number): void {
-    for (let i: number = 0; i < n - 1; i++) {
+  sort(length: number): void {
+    for (let i: number = 0; i < length - 1; i++) {
       let j: number = 1;
       while (j >= 0 && this.arr[j] > this.arr[j + 1]) {
         this.swap(j, j + 1);
@@ -25,6 +25,7 @@ class InsertionSortLauncher extends SortLauncher {
   async execute() {
     await super.launch((answer: { length: string; data: string }) => {
       this.dataStructure.sort(Number(answer.length));
+      console.log(this.dataStructure.arr);
     });
   }
 }

@@ -5,12 +5,12 @@ export class SelectionSort extends Sort {
     super();
   }
 
-  sort(n: number): void {
+  sort(length: number): void {
     let [index, min]: number[] = [0, 0];
 
-    for (let i: number = 0; i < n; i++) {
+    for (let i: number = 0; i < length; i++) {
       min = Number.MAX_SAFE_INTEGER;
-      for (let j: number = i; j < n; j++) {
+      for (let j: number = i; j < length; j++) {
         if (min > this.arr[j]) {
           min = this.arr[j];
           index = j;
@@ -30,6 +30,7 @@ class SelectionSortLauncher extends SortLauncher {
   async execute() {
     await super.launch((answer: { length: string; data: string }) => {
       this.dataStructure.sort(Number(answer.length));
+      console.log(this.dataStructure.arr);
     });
   }
 }

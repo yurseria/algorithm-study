@@ -35,6 +35,7 @@ class QuickSortLauncher extends SortLauncher {
   async execute() {
     await super.launch((answer: { length: string; data: string }) => {
       this.dataStructure.quickSort(0, Number(answer.length) - 1);
+      console.log(this.dataStructure.arr);
     });
   }
 }

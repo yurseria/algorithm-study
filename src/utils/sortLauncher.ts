@@ -13,7 +13,7 @@ export class Sort {
     this.arr[b] = temp;
   }
 
-  sort(n: number | number[]): void {}
+  sort(length: number): void {}
 }
 
 export class SortLauncher {
@@ -65,7 +65,6 @@ export class SortLauncher {
       }
 
       callback(answer);
-      console.log(this.dataStructure.arr);
 
       resolve();
     });
