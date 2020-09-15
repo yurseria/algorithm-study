@@ -6,7 +6,7 @@ const separator = new inquirer.Separator();
 
 export class AlgorithmLauncher implements IAlgorithmLauncher {
   dataStructure: any;
-  [key: string]: Function;
+  [key: string]: Function | ThisType<AlgorithmLauncher>;
 
   constructor() {
     this.dataStructure = null;
@@ -56,7 +56,7 @@ export class AlgorithmLauncher implements IAlgorithmLauncher {
         process.exit(0);
       }
 
-      await this[answer.function]();
+      await (this[answer.function] as Function)();
       await this.execute(isRecursive);
       resolve();
     });
