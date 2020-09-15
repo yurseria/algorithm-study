@@ -82,7 +82,7 @@ class StackCalculator {
         if (input[i] === "*") z = y * x;
         if (input[i] === "/") z = y / x;
 
-        this.stack.push(String(z));
+        this.stack.push(`${z}`);
       } else {
         this.stack.push(input[i]);
       }

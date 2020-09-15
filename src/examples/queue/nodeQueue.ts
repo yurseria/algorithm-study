@@ -41,7 +41,7 @@ class NodeQueue {
 
     if (node === null) {
       console.error("Queue underflow!");
-      return String(-Infinity);
+      return `${-Infinity}`;
     }
 
     this.front = node.next;

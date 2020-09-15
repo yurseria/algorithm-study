@@ -25,7 +25,7 @@ class ArrayQueue {
   pop(): string {
     if (this.front === this.rear) {
       console.error("Queue underflow!");
-      return String(-Infinity);
+      return `${-Infinity}`;
     }
     return this.queue[this.front++];
   }
